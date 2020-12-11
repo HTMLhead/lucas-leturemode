@@ -1,0 +1,14 @@
+{
+  "name": "lucas-extension",
+  "version": "1.0.0",
+  "description": "- 강의모드를 위한 확장 프로그램 - 스텝, 하위스텝이 OPEN상태가 아니라면 웹페이지에서 엘리먼트를 제거해줍니다.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  }
+}
