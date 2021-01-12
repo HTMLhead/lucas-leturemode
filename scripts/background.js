@@ -1,9 +1,12 @@
-chrome.webNavigation.onCompleted.addListener(function (details) {
-  if (details.frameId === 0) {
-    chrome.tabs.executeScript(details.tabId, { file: "removeOpenElements.js" });
-  }
-});
+let clicked = false;
 
 chrome.browserAction.onClicked.addListener(function () {
-  chrome.tabs.executeScript(null, { file: "removeOpenElements.js" });
+  clicked = !clicked;
+  chrome.tabs.onUpdated.addListener(() => {
+    if (clicked) {
+      chrome.tabs.executeScript({
+        file: "scripts/removeOpenElements.js",
+      });
+    }
+  });
 });
