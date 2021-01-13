@@ -12,5 +12,5 @@
   "browser_action": {
     "default_icon": "image/Lucas.png"
   },
-  "permissions": ["https://*/*", "http://*/*", "tabs"]
+  "permissions": ["https://lucas.codesquad.kr/*", "tabs"]
 }
