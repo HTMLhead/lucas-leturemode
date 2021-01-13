@@ -7,7 +7,7 @@
 
 ## 다운로드 받기
 
-- [루카스 강의모드]()
+- [루카스 강의모드](https://chrome.google.com/webstore/detail/%EB%A3%A8%EC%B9%B4%EC%8A%A4-%ED%99%95%EC%9E%A5%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8/focimgcilchmcngnbhalbnmdlhlpobjm?hl=ko)
 
 ## 사용 방법
 
