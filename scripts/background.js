@@ -7,6 +7,11 @@ chrome.browserAction.onClicked.addListener(function () {
       file: "scripts/createLecturingNotice.js",
     });
   }
+  if (!clicked) {
+    chrome.tabs.executeScript({
+      file: "scripts/removeLecturingNotice.js",
+    });
+  }
   chrome.tabs.onUpdated.addListener(() => {
     if (clicked) {
       chrome.tabs.executeScript({
