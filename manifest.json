@@ -4,11 +4,13 @@
   "name": "루카스 확장프로그램",
   "description": "OPEN상태의 스텝과 하위스텝만 보여준다.",
   "version": "1.0",
-  "permissions": ["activeTab"],
+
   "background": {
-    "scripts": ["scripts/background.js"]
+    "scripts": ["scripts/background.js"],
+    "persistent": true
   },
   "browser_action": {
     "default_icon": "image/Lucas.png"
-  }
+  },
+  "permissions": ["https://*/*", "http://*/*", "tabs"]
 }
