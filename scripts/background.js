@@ -6,11 +6,13 @@ chrome.browserAction.onClicked.addListener(function () {
     chrome.tabs.executeScript({
       file: "scripts/createLecturingNotice.js",
     });
+    chrome.browserAction.setBadgeText({ text: "강의 중" });
   }
   if (!clicked) {
     chrome.tabs.executeScript({
       file: "scripts/removeLecturingNotice.js",
     });
+    chrome.browserAction.setBadgeText({ text: "" });
   }
   chrome.tabs.onUpdated.addListener(() => {
     if (clicked) {
