@@ -3,7 +3,7 @@
 
   "name": "루카스 확장프로그램",
   "description": "OPEN상태의 스텝과 하위스텝만 보여준다.",
-  "version": "1.0",
+  "version": "2.0",
 
   "background": {
     "service_worker": "scripts/background.js"
@@ -16,5 +16,5 @@
     "http://localhost:4000/*",
     "https://beta.lucas.codesquad.kr/*"
   ],
-  "permissions": ["tabs", "scripting", "webNavigation"]
+  "permissions": ["scripting"]
 }
