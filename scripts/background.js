@@ -10,71 +10,44 @@ chrome.action.onClicked.addListener(async (tab) => {
   if (!clicked) {
     chrome.action.setBadgeText({ text: "" });
   }
-  console.log(clicked);
-  if (clicked) {
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: findAndHideEle,
-    });
-  }
 
-  if (!clicked) {
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: findAndRevealEle,
-    });
-  }
+  chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: treatElement,
+    args: [clicked ? "none" : "flex"],
+  });
 
   chrome.tabs.onUpdated.addListener(() => {
     if (clicked) {
-      console.log("played");
       chrome.scripting.executeScript({
-        files: ["scripts/removeOpenElements.js"],
+        target: { tabId: tab.id },
+        func: treatElement,
+        args: [clicked ? "none" : "flex"],
       });
     }
   });
 });
 
-function findAndRevealEle() {
+function treatElement(displayStr) {
   const stepContainer = document.getElementById("step-list-container");
-  const lowerStepContainer = document.getElementById("lowerstep-list-container");
+  const lowerStepContainerList = document.querySelectorAll("#lowerstep-list-container");
 
   if (stepContainer) {
-    revealChildElement(stepContainer);
+    treatChildEle(stepContainer, displayStr);
   }
-  if (lowerStepContainer) {
-    revealChildElement(lowerStepContainer);
-  }
-}
+  if (lowerStepContainerList.length > 0)
+    lowerStepContainerList.forEach((lowerStepContainer) => {
+      treatChildEle(lowerStepContainer, displayStr);
+    });
 
-function findAndHideEle() {
-  const stepContainer = document.getElementById("step-list-container");
-  const lowerStepContainer = document.getElementById("lowerstep-list-container");
-  console.log(stepContainer);
-  if (stepContainer) {
-    removeChildElement(stepContainer);
+  function treatChildEle(container, display) {
+    const childElements = Array.from(container.children);
+    const closedElements = childElements.filter(({ id }) => {
+      const splittedIdArr = id.split("-");
+      return splittedIdArr[splittedIdArr.length - 1] !== "OPEN";
+    });
+    closedElements.forEach((ele) => (ele.style.display = display));
   }
-  if (lowerStepContainer) {
-    removeChildElement(lowerStepContainer);
-  }
-}
-
-function revealChildElement(containerElement) {
-  const childElements = Array.from(containerElement.children);
-  const closedElements = childElements.filter(({ id }) => {
-    const splittedIdArr = id.split("-");
-    return splittedIdArr[splittedIdArr.length - 1] !== "OPEN";
-  });
-  closedElements.forEach((ele) => (ele.style.display = "none"));
-}
-
-function removeChildElement(containerElement) {
-  const childElements = Array.from(containerElement.children);
-  const closedElements = childElements.filter(({ id }) => {
-    const splittedIdArr = id.split("-");
-    return splittedIdArr[splittedIdArr.length - 1] !== "OPEN";
-  });
-  closedElements.forEach((ele) => (ele.style.display = "none"));
 }
 
 // chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
