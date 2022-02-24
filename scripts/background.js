@@ -1,16 +1,6 @@
 let clicked = false;
 
 chrome.action.onClicked.addListener(async (tab) => {
-  let frames = await chrome.webNavigation.getAllFrames({ tabId: tab.id });
-  let frame1 = frames[0].frameId;
-
-  // chrome.scripting.executeScript({
-  //   target: {
-  //     tabId: tab.id,
-  //     frameIds: [frame1],
-  //   },
-  //   files: ["scripts/createLecturingNotice.js"],
-  // });
   clicked = !clicked;
 
   if (clicked) {
@@ -20,14 +10,18 @@ chrome.action.onClicked.addListener(async (tab) => {
   if (!clicked) {
     chrome.action.setBadgeText({ text: "" });
   }
-
+  console.log(clicked);
   if (clicked) {
     chrome.scripting.executeScript({
-      target: {
-        tabId: tab.id,
-        frameIds: [frame1],
-      },
-      files: ["scripts/removeOpenElements.js"],
+      target: { tabId: tab.id },
+      func: findAndHideEle,
+    });
+  }
+
+  if (!clicked) {
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: findAndRevealEle,
     });
   }
 
@@ -40,6 +34,48 @@ chrome.action.onClicked.addListener(async (tab) => {
     }
   });
 });
+
+function findAndRevealEle() {
+  const stepContainer = document.getElementById("step-list-container");
+  const lowerStepContainer = document.getElementById("lowerstep-list-container");
+
+  if (stepContainer) {
+    revealChildElement(stepContainer);
+  }
+  if (lowerStepContainer) {
+    revealChildElement(lowerStepContainer);
+  }
+}
+
+function findAndHideEle() {
+  const stepContainer = document.getElementById("step-list-container");
+  const lowerStepContainer = document.getElementById("lowerstep-list-container");
+  console.log(stepContainer);
+  if (stepContainer) {
+    removeChildElement(stepContainer);
+  }
+  if (lowerStepContainer) {
+    removeChildElement(lowerStepContainer);
+  }
+}
+
+function revealChildElement(containerElement) {
+  const childElements = Array.from(containerElement.children);
+  const closedElements = childElements.filter(({ id }) => {
+    const splittedIdArr = id.split("-");
+    return splittedIdArr[splittedIdArr.length - 1] !== "OPEN";
+  });
+  closedElements.forEach((ele) => (ele.style.display = "none"));
+}
+
+function removeChildElement(containerElement) {
+  const childElements = Array.from(containerElement.children);
+  const closedElements = childElements.filter(({ id }) => {
+    const splittedIdArr = id.split("-");
+    return splittedIdArr[splittedIdArr.length - 1] !== "OPEN";
+  });
+  closedElements.forEach((ele) => (ele.style.display = "none"));
+}
 
 // chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 //   if (
